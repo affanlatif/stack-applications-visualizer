@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Applications of Stack: LIFO, Infix → Postfix & Postfix Evaluation</title>
+  <meta name="description" content="Interactive CSE presentation visualizer for Stack data structures, LIFO, Infix to Postfix conversion, and Postfix expression evaluation with live C code sync.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="brand">
+      <div class="brand-icon">S</div>
+      <span>Stack Applications</span>
+      <span class="brand-subtitle">BTech CSE / DSA</span>
+    </div>
+    
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#section-lifo" class="nav-link active" id="nav-lifo">Stack Fundamentals</a></li>
+        <li><a href="#section-infix" class="nav-link" id="nav-infix">Infix → Postfix</a></li>
+        <li><a href="#section-postfix" class="nav-link" id="nav-postfix">Postfix Evaluation</a></li>
+        <li><a href="#section-pipeline" class="nav-link" id="nav-pipeline">Pipeline & Quiz</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Progress Bar Indicator -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progress-bar"></div>
+  </div>
+
+  <main class="container">
+    
+    <!-- Hero Banner -->
+    <section class="hero-section">
+      <div class="hero-badge">Data Structures & Algorithms Presentation</div>
+      <h1 class="hero-title">Applications of Stack</h1>
+      <p class="hero-subtitle">
+        An interactive computer-science visualization on <strong>LIFO mechanics</strong>, 
+        <strong>Infix → Postfix conversion</strong>, and <strong>Postfix evaluation</strong> with real-time C code synchronization.
+      </p>
+    </section>
+
+    <!-- SECTION 1: STACK FUNDAMENTALS / LIFO -->
+    <section id="section-lifo" class="section-wrapper">
+      <div class="section-header">
+        <span class="section-tag">Section 01</span>
+        <h2 class="section-title">Stack Fundamentals & LIFO</h2>
+        <p class="section-desc">“Stack follows LIFO — Last In, First Out.” Experience how elements push and pop from the top of memory.</p>
+      </div>
+
+      <div class="grid-2">
+        <!-- Interactive Stack Visualizer Column -->
+        <div class="card">
+          <h3 style="font-size: 1.1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+            <span>Interactive Stack Visualizer</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">MAX CAPACITY: 8</span>
+          </h3>
+
+          <div class="stack-visualizer-container">
+            <div class="stack-frame" id="stack-frame">
+              <div class="top-pointer" id="top-pointer" style="bottom: 8px;">
+                <span>TOP</span>
+                <span class="top-pointer-arrow">➔</span>
+              </div>
+              <!-- Stack elements rendered dynamically -->
+            </div>
+            
+            <div class="status-badge info" id="stack-status-msg">
+              Stack Initialized: Empty (top = -1)
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div style="margin-top: 1.5rem;">
+            <div class="input-group">
+              <input type="text" id="stack-input" class="input-field" placeholder="Enter element (e.g. A, B, 42)..." maxlength="5">
+              <button class="btn btn-primary" id="btn-push">PUSH</button>
+              <button class="btn btn-secondary" id="btn-pop">POP</button>
+              <button class="btn btn-secondary" id="btn-peek">PEEK</button>
+              <button class="btn btn-danger" id="btn-clear">CLEAR</button>
+            </div>
+            
+            <div class="chip-group">
+              <span style="font-size: 0.75rem; color: var(--text-muted); align-self: center;">Quick Push:</span>
+              <button class="chip" onclick="quickPush('A')">+ Push A</button>
+              <button class="chip" onclick="quickPush('B')">+ Push B</button>
+              <button class="chip" onclick="quickPush('C')">+ Push C</button>
+              <button class="chip" onclick="quickPush('99')">+ Push 99</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LIFO Explanation & C Code Sync Column -->
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+          <!-- Analogy & LIFO Card -->
+          <div class="card">
+            <h3 style="font-size: 1.05rem; margin-bottom: 0.75rem;">LIFO Mechanical Principle</h3>
+            <div class="lifo-diagram">
+              <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-light);">
+                LAST IN ➔ TOP ELEMENT ➔ FIRST OUT
+              </div>
+              <div class="plate-item last-in" id="plate-top">Top Plate (C)</div>
+              <div class="plate-item">Middle Plate (B)</div>
+              <div class="plate-item">Bottom Plate (A)</div>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.85rem; line-height: 1.5;">
+              <strong>Real-World Analogy:</strong> Like a stack of dinner plates in a cafeteria. 
+              The last plate placed on top is always the first plate removed.
+            </p>
+          </div>
+
+          <!-- C Code Panel -->
+          <div class="code-panel">
+            <div class="code-header">
+              <span>stack_operations.c</span>
+              <span>C Implementation Sync</span>
+            </div>
+            <div class="code-body" id="lifo-code-block">
+              <div class="code-line" id="line-push-1"><span class="code-num">1</span><code>void push(int value) {</code></div>
+              <div class="code-line" id="line-push-2"><span class="code-num">2</span><code>    if (top == MAX - 1) return; // Overflow</code></div>
+              <div class="code-line" id="line-push-3"><span class="code-num">3</span><code>    stack[++top] = value;</code></div>
+              <div class="code-line" id="line-push-4"><span class="code-num">4</span><code>}</code></div>
+              <div class="code-line" id="line-pop-1"><span class="code-num">5</span><code>int pop() {</code></div>
+              <div class="code-line" id="line-pop-2"><span class="code-num">6</span><code>    if (top == -1) return -1; // Underflow</code></div>
+              <div class="code-line" id="line-pop-3"><span class="code-num">7</span><code>    return stack[top--];</code></div>
+              <div class="code-line" id="line-pop-4"><span class="code-num">8</span><code>}</code></div>
+              <div class="code-line" id="line-peek-1"><span class="code-num">9</span><code>int peek() {</code></div>
+              <div class="code-line" id="line-peek-2"><span class="code-num">10</span><code>    return stack[top]; // Inspect top without removing</code></div>
+              <div class="code-line" id="line-peek-3"><span class="code-num">11</span><code>}</code></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: INFIX → POSTFIX CONVERSION -->
+    <section id="section-infix" class="section-wrapper">
+      <div class="section-header">
+        <span class="section-tag">Section 02</span>
+        <h2 class="section-title">Infix → Postfix Conversion</h2>
+        <p class="section-desc">From Human-Friendly Infix <code>(A + B * C)</code> to Machine-Friendly Postfix <code>(A B C * +)</code> using an Operator Stack.</p>
+      </div>
+
+      <!-- Controls & Input Bar -->
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 0.5rem;">
+          Enter Infix Expression:
+        </label>
+        <div class="input-group">
+          <input type="text" id="infix-input" class="input-field" value="A + B * C" placeholder="e.g. (A+B)*C">
+          <button class="btn btn-primary" id="btn-infix-load">LOAD EXPRESSION</button>
+        </div>
+
+        <div class="chip-group">
+          <span style="font-size: 0.75rem; color: var(--text-muted); align-self: center;">Preset Expressions:</span>
+          <button class="chip" onclick="loadInfixPreset('A+B*C')">A + B * C</button>
+          <button class="chip" onclick="loadInfixPreset('(A+B)*C')">(A + B) * C</button>
+          <button class="chip" onclick="loadInfixPreset('A+B*C-D/E')">A + B * C - D / E</button>
+          <button class="chip" onclick="loadInfixPreset('(A+B)*(C-D)')">(A + B) * (C - D)</button>
+        </div>
+      </div>
+
+      <!-- Main Step-by-Step Visualization Track -->
+      <div class="controls-bar">
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary btn-sm" id="btn-infix-prev">◀ Previous Step</button>
+          <button class="btn btn-primary btn-sm" id="btn-infix-next">NEXT STEP ▶</button>
+          <button class="btn btn-secondary btn-sm" id="btn-infix-autoplay">▶ Auto Play</button>
+          <button class="btn btn-danger btn-sm" id="btn-infix-reset">↺ Reset</button>
+        </div>
+        <div class="speed-slider-group">
+          <span>Speed:</span>
+          <input type="range" id="infix-speed" min="300" max="2000" value="1000" step="100" style="accent-color: var(--accent-color);">
+          <span id="infix-speed-val" style="font-family: var(--font-mono);">1.0s</span>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom: 1.5rem;">
+        <!-- Area 1: Input Expression Scanning -->
+        <div class="card">
+          <h3 style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem;">1. INPUT EXPRESSION SCAN</h3>
+          <div class="expression-display" id="infix-tokens-container">
+            <!-- Token chips rendered here -->
+          </div>
+          <div style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-secondary);" id="infix-current-token-info">
+            Token: <strong style="color: var(--accent-light);">-</strong>
+          </div>
+        </div>
+
+        <!-- Area 2: Operator Stack -->
+        <div class="card">
+          <h3 style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem;">2. OPERATOR STACK</h3>
+          <div class="stack-visualizer-container" style="min-height: 200px; padding: 1rem;">
+            <div class="stack-frame" id="op-stack-frame" style="width: 140px; min-height: 150px;">
+              <!-- Operator stack elements -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Area 3: Postfix Output Buffer -->
+        <div class="card">
+          <h3 style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem;">3. POSTFIX OUTPUT</h3>
+          <div class="postfix-output-box" id="infix-output-box">
+            <span style="color: var(--text-muted); font-weight: 400; font-size: 0.95rem;">(Output empty)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Explanation & Code Sync Row -->
+      <div class="grid-2">
+        <!-- Precedence & Reasoning Explanation -->
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div class="card">
+            <h4 style="font-size: 0.95rem; color: var(--accent-light); margin-bottom: 0.5rem;" id="infix-step-title">
+              Step Explanation
+            </h4>
+            <p style="font-size: 0.95rem; line-height: 1.6;" id="infix-step-desc">
+              Click <strong>NEXT STEP</strong> to start scanning the infix expression left to right.
+            </p>
+          </div>
+
+          <!-- Precedence Hierarchy Card -->
+          <div class="card">
+            <h4 style="font-size: 0.9rem; margin-bottom: 0.75rem;">Operator Precedence Hierarchy</h4>
+            <table class="precedence-table">
+              <thead>
+                <tr>
+                  <th>Operators</th>
+                  <th>Precedence</th>
+                  <th>Associativity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="prec-row-4">
+                  <td><code>( )</code></td>
+                  <td>Highest (Parentheses)</td>
+                  <td>N/A</td>
+                </tr>
+                <tr id="prec-row-3">
+                  <td><code>^</code></td>
+                  <td>Level 3 (Exponent)</td>
+                  <td>Right-to-Left</td>
+                </tr>
+                <tr id="prec-row-2">
+                  <td><code>*  /  %</code></td>
+                  <td>Level 2 (Multiplicative)</td>
+                  <td>Left-to-Right</td>
+                </tr>
+                <tr id="prec-row-1">
+                  <td><code>+  -</code></td>
+                  <td>Level 1 (Additive)</td>
+                  <td>Left-to-Right</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- C Code Synchronization -->
+        <div class="code-panel">
+          <div class="code-header">
+            <span>infix_to_postfix.c</span>
+            <span>Algorithm Logic</span>
+          </div>
+          <div class="code-body" id="infix-code-block">
+            <div class="code-line" id="inf-c-1"><span class="code-num">1</span><code>for (int i = 0; expr[i] != '\0'; i++) {</code></div>
+            <div class="code-line" id="inf-c-2"><span class="code-num">2</span><code>    char c = expr[i];</code></div>
+            <div class="code-line" id="inf-c-3"><span class="code-num">3</span><code>    if (isalnum(c)) {</code></div>
+            <div class="code-line" id="inf-c-4"><span class="code-num">4</span><code>        postfix[j++] = c; // Operand -> Output</code></div>
+            <div class="code-line" id="inf-c-5"><span class="code-num">5</span><code>    } else if (c == '(') {</code></div>
+            <div class="code-line" id="inf-c-6"><span class="code-num">6</span><code>        push(c); // Push '(' onto stack</code></div>
+            <div class="code-line" id="inf-c-7"><span class="code-num">7</span><code>    } else if (c == ')') {</code></div>
+            <div class="code-line" id="inf-c-8"><span class="code-num">8</span><code>        while (top != -1 && stack[top] != '(')</code></div>
+            <div class="code-line" id="inf-c-9"><span class="code-num">9</span><code>            postfix[j++] = pop();</code></div>
+            <div class="code-line" id="inf-c-10"><span class="code-num">10</span><code>        pop(); // Discard '('</code></div>
+            <div class="code-line" id="inf-c-11"><span class="code-num">11</span><code>    } else { // Operator</code></div>
+            <div class="code-line" id="inf-c-12"><span class="code-num">12</span><code>        while (top != -1 && precedence(stack[top]) >= precedence(c))</code></div>
+            <div class="code-line" id="inf-c-13"><span class="code-num">13</span><code>            postfix[j++] = pop();</code></div>
+            <div class="code-line" id="inf-c-14"><span class="code-num">14</span><code>        push(c);</code></div>
+            <div class="code-line" id="inf-c-15"><span class="code-num">15</span><code>    }</code></div>
+            <div class="code-line" id="inf-c-16"><span class="code-num">16</span><code>}</code></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Final Transformation Banner -->
+      <div class="transform-banner" id="infix-final-transform">
+        <div class="transform-item">
+          <div class="transform-label">Infix Notation</div>
+          <div class="transform-val" id="tf-infix-val">A + B * C</div>
+        </div>
+        <span class="transform-arrow">➔</span>
+        <div class="transform-item">
+          <div class="transform-label">Stack Conversion</div>
+          <div class="transform-val" style="color: var(--accent-light);">A B C * +</div>
+        </div>
+        <span class="transform-arrow">➔</span>
+        <div class="transform-item">
+          <div class="transform-label">Postfix Result</div>
+          <div class="transform-val" style="color: #10b981;" id="tf-postfix-val">ABC*+</div>
+        </div>
+      </div>
+      <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 0.75rem;">
+        “Same mathematical expression. Different representation. Zero parentheses required.”
+      </p>
+    </section>
+
+    <!-- SECTION 3: POSTFIX EVALUATION -->
+    <section id="section-postfix" class="section-wrapper">
+      <div class="section-header">
+        <span class="section-tag">Section 03</span>
+        <h2 class="section-title">Postfix Evaluation</h2>
+        <p class="section-desc">Evaluating Postfix Expressions using an <strong>Operand Stack</strong> without operator precedence ambiguity.</p>
+      </div>
+
+      <!-- Controls & Expression Input -->
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 0.5rem;">
+          Enter Numeric Postfix Expression:
+        </label>
+        <div class="input-group">
+          <input type="text" id="eval-input" class="input-field" value="23*54*+9-" placeholder="e.g. 23*54*+9-">
+          <button class="btn btn-primary" id="btn-eval-load">LOAD EVALUATION</button>
+        </div>
+
+        <div class="chip-group">
+          <span style="font-size: 0.75rem; color: var(--text-muted); align-self: center;">Presets:</span>
+          <button class="chip" onclick="loadEvalPreset('23*54*+9-')">2 3 * 5 4 * + 9 -</button>
+          <button class="chip" onclick="loadEvalPreset('82/3+')">8 2 / 3 +</button>
+          <button class="chip" onclick="loadEvalPreset('53+82-*')">5 3 + 8 2 - *</button>
+        </div>
+      </div>
+
+      <!-- Step Controls -->
+      <div class="controls-bar">
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary btn-sm" id="btn-eval-prev">◀ Previous Step</button>
+          <button class="btn btn-primary btn-sm" id="btn-eval-next">NEXT STEP ▶</button>
+          <button class="btn btn-secondary btn-sm" id="btn-eval-autoplay">▶ Auto Play</button>
+          <button class="btn btn-danger btn-sm" id="btn-eval-reset">↺ Reset</button>
+        </div>
+        <div class="speed-slider-group">
+          <span>Speed:</span>
+          <input type="range" id="eval-speed" min="300" max="2000" value="1000" step="100" style="accent-color: var(--accent-color);">
+          <span id="eval-speed-val" style="font-family: var(--font-mono);">1.0s</span>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom: 1.5rem;">
+        <!-- Token Area -->
+        <div class="card">
+          <h3 style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem;">1. SCANNING POSTFIX TOKEN</h3>
+          <div class="expression-display" id="eval-tokens-container">
+            <!-- Token chips -->
+          </div>
+          <div style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-secondary);" id="eval-current-token-info">
+            Current Token: <strong style="color: var(--accent-light);">-</strong>
+          </div>
+        </div>
+
+        <!-- Operand Stack -->
+        <div class="card">
+          <h3 style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem;">2. OPERAND STACK</h3>
+          <div class="stack-visualizer-container" style="min-height: 200px; padding: 1rem;">
+            <div class="stack-frame" id="eval-stack-frame" style="width: 140px; min-height: 150px;">
+              <!-- Operand stack elements -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Evaluation Step Explanation -->
+        <div class="card">
+          <h3 style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem;">3. ACTION & COMPUTATION</h3>
+          <div style="font-size: 0.95rem; line-height: 1.6;" id="eval-step-desc">
+            Click <strong>NEXT STEP</strong> to evaluate the expression.
+          </div>
+          
+          <div class="eval-order-box" id="eval-order-box" style="display: none;">
+            <div style="font-size: 0.8rem; text-align: center; color: var(--accent-light); font-weight: 600;">
+              OPERATOR OPERAND ORDER (a op b)
+            </div>
+            <div class="eval-math-step">
+              <div class="eval-var">
+                <span id="eval-var-a">a</span>
+                <span class="eval-var-label">1st Pop (a)</span>
+              </div>
+              <span id="eval-op-symbol">+</span>
+              <div class="eval-var">
+                <span id="eval-var-b">b</span>
+                <span class="eval-var-label">Top Pop (b)</span>
+              </div>
+              <span>=</span>
+              <span style="color: #10b981;" id="eval-result-val">?</span>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary); text-align: center;">
+              Note: <code>b = pop()</code> (top element), <code>a = pop()</code> (2nd element). Calculate <code>a op b</code>!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- C Code Sync Row -->
+      <div class="grid-2">
+        <div class="card">
+          <h4 style="font-size: 1rem; margin-bottom: 0.5rem;">Why Postfix Evaluation Works</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+            In postfix notation, operators immediately follow their operands. When an operator is encountered, 
+            the stack already holds the necessary arguments. The result is pushed back, enabling sequential $O(n)$ evaluation in a single left-to-right pass.
+          </p>
+        </div>
+
+        <div class="code-panel">
+          <div class="code-header">
+            <span>postfix_evaluation.c</span>
+            <span>C Logic</span>
+          </div>
+          <div class="code-body" id="eval-code-block">
+            <div class="code-line" id="ev-c-1"><span class="code-num">1</span><code>for (int i = 0; postfix[i] != '\0'; i++) {</code></div>
+            <div class="code-line" id="ev-c-2"><span class="code-num">2</span><code>    char c = postfix[i];</code></div>
+            <div class="code-line" id="ev-c-3"><span class="code-num">3</span><code>    if (isdigit(c)) {</code></div>
+            <div class="code-line" id="ev-c-4"><span class="code-num">4</span><code>        push(c - '0'); // Convert char to integer & push</code></div>
+            <div class="code-line" id="ev-c-5"><span class="code-num">5</span><code>    } else {</code></div>
+            <div class="code-line" id="ev-c-6"><span class="code-num">6</span><code>        int b = pop(); // Top operand</code></div>
+            <div class="code-line" id="ev-c-7"><span class="code-num">7</span><code>        int a = pop(); // Next operand</code></div>
+            <div class="code-line" id="ev-c-8"><span class="code-num">8</span><code>        switch(c) {</code></div>
+            <div class="code-line" id="ev-c-9"><span class="code-num">9</span><code>            case '+': push(a + b); break;</code></div>
+            <div class="code-line" id="ev-c-10"><span class="code-num">10</span><code>            case '-': push(a - b); break;</code></div>
+            <div class="code-line" id="ev-c-11"><span class="code-num">11</span><code>            case '*': push(a * b); break;</code></div>
+            <div class="code-line" id="ev-c-12"><span class="code-num">12</span><code>            case '/': push(a / b); break;</code></div>
+            <div class="code-line" id="ev-c-13"><span class="code-num">13</span><code>        }</code></div>
+            <div class="code-line" id="ev-c-14"><span class="code-num">14</span><code>    }</code></div>
+            <div class="code-line" id="ev-c-15"><span class="code-num">15</span><code>}</code></div>
+            <div class="code-line" id="ev-c-16"><span class="code-num">16</span><code>return pop(); // Final Answer</code></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: PIPELINE & COMPLEXITY SUMMARY -->
+    <section id="section-pipeline" class="section-wrapper">
+      <div class="section-header">
+        <span class="section-tag">Section 04</span>
+        <h2 class="section-title">End-to-End Pipeline & Complexity</h2>
+        <p class="section-desc">The complete lifecycle of expression parsing from human input to evaluation result.</p>
+      </div>
+
+      <!-- Flowchart Banner -->
+      <div class="card" style="margin-bottom: 2rem;">
+        <div class="transform-banner" style="margin-top: 0; background: transparent; border: none;">
+          <div class="transform-item">
+            <div class="transform-label">1. Infix Expression</div>
+            <div class="transform-val" style="color: var(--accent-light);">2 + 3 * 4</div>
+          </div>
+          <span class="transform-arrow">➔</span>
+          <div class="transform-item">
+            <div class="transform-label">2. Operator Stack</div>
+            <div class="transform-val">Conversion</div>
+          </div>
+          <span class="transform-arrow">➔</span>
+          <div class="transform-item">
+            <div class="transform-label">3. Postfix Expression</div>
+            <div class="transform-val" style="color: var(--warning-color);">2 3 4 * +</div>
+          </div>
+          <span class="transform-arrow">➔</span>
+          <div class="transform-item">
+            <div class="transform-label">4. Operand Stack</div>
+            <div class="transform-val">Evaluation</div>
+          </div>
+          <span class="transform-arrow">➔</span>
+          <div class="transform-item">
+            <div class="transform-label">5. Result</div>
+            <div class="transform-val" style="color: #10b981;">14</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Complexity Analysis Cards -->
+      <div class="grid-2" style="margin-bottom: 3rem;">
+        <div class="card">
+          <h3 style="font-size: 1.1rem; color: var(--accent-light); margin-bottom: 0.75rem;">Time Complexity: O(N)</h3>
+          <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+            Every character in an infix expression of length $N$ is pushed and popped at most once during conversion. 
+            Similarly, postfix evaluation scans the $N$-character string exactly once, performing constant $O(1)$ stack ops per token.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size: 1.1rem; color: #10b981; margin-bottom: 0.75rem;">Space Complexity: O(N)</h3>
+          <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+            The auxiliary stack holds at most $N$ elements in the worst case (e.g. nested parentheses or sequential operands). 
+            The output string also requires $O(N)$ storage space.
+          </p>
+        </div>
+      </div>
+
+      <!-- SECTION 5: INTERACTIVE QUIZ CHALLENGE ("TEST YOURSELF") -->
+      <div class="quiz-card">
+        <span class="section-tag">Interactive Classroom Quiz</span>
+        <h3 class="quiz-question">Test Yourself: Convert & Evaluate</h3>
+        
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+          Convert the following Infix expression to Postfix and evaluate its final numerical result:
+        </p>
+
+        <div class="quiz-expr-box" id="quiz-question-expr">
+          8 + 2 * 3 - 4
+        </div>
+
+        <div class="grid-2" style="margin-bottom: 1.5rem;">
+          <div>
+            <label style="font-size: 0.85rem; color: var(--text-secondary); display: block; margin-bottom: 0.4rem;">
+              Your Postfix Answer:
+            </label>
+            <input type="text" id="quiz-ans-postfix" class="input-field" placeholder="e.g. 823*+4-">
+          </div>
+
+          <div>
+            <label style="font-size: 0.85rem; color: var(--text-secondary); display: block; margin-bottom: 0.4rem;">
+              Your Evaluated Result:
+            </label>
+            <input type="number" id="quiz-ans-result" class="input-field" placeholder="e.g. 10">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+          <button class="btn btn-primary" id="btn-quiz-submit">SUBMIT ANSWERS</button>
+          <button class="btn btn-secondary" id="btn-quiz-new">Try Another Expression ➔</button>
+        </div>
+
+        <div id="quiz-feedback-box" style="margin-top: 1.25rem; display: none;" class="status-badge"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Applications of Stack — Built for BTech CSE / Data Structures Presentation</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
